@@ -1,42 +1,34 @@
 module aaa(
-// Clock Input (50 MHz)
+
   input  CLOCK_50,
-  //  Push Buttons
+ 
   input  [3:0]  KEY,
-  //  DPDT Switches 
+  
   input  [17:0]  SW,
   
-   //  7-SEG Displays  
+   
   output  [6:0]  HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7,
   output [7:0] sum,
   output cout,
-  // This is added to the convert the 8-bits to different HEX_
+  
   output [3:0] ONES, TENS,
   output [1:0] HUNDREDS,
   output  [3:0] finalhundred,
-  //  LEDs
-  output  [8:0]  LEDG,  //  LED Green[8:0]
-  output  [17:0]  LEDR, //  LED Red[17:0]
-  //  GPIO Connections
+
+  output  [8:0]  LEDG,  
+  output  [17:0]  LEDR, 
+
   inout  [35:0]  GPIO_0, GPIO_1
 );
-//  set all inout ports to tri-state
+
 assign  GPIO_0    =  36'hzzzzzzzzz;
 assign  GPIO_1    =  36'hzzzzzzzzz;
 
-// Connect dip switches to red LEDs
+
 assign LEDR[17:0] = SW[17:0];
 wire [15:0] A;
-//always @(negedge KEY[3])
-//    A <= SW[15:0];
-// The algorithm to be used comes here.
-// This time we use counter code here.
-//module countercode(D,clk,load,Q);
 countercode(SW[2:0],KEY[0],KEY[1],sum[2:0]);
 
-// Before assigning the 8-bit sum to different HEX,
-// we call this module to send the desired decimal.
-// multiply_to_BCD(A,ONES, TENS, HUNDREDS);
 binary_to_BCD(sum[7:0],ONES, TENS,HUNDREDS);
 assign finalhundred = {2'b00,HUNDREDS[1:0]};
 hex_7seg dsp0(ONES,HEX0);
@@ -56,8 +48,7 @@ module hex_7seg(hex_digit,seg);
 input [3:0] hex_digit;
 output [6:0] seg;
 reg [6:0] seg;
-// seg = {g,f,e,d,c,b,a};
-// 0 is on and 1 is off
+
 
 always @ (hex_digit)
 case (hex_digit)
@@ -80,8 +71,7 @@ case (hex_digit)
 endcase
 endmodule
 
-// This module is to make the 8 bits sum to display on 
-// three different HEX0, HEX1, HEX2
+
 module binary_to_BCD(A,ONES,TENS,HUNDREDS); 
 input [7:0] A; 
 output [3:0] ONES, TENS; 
@@ -108,8 +98,7 @@ assign TENS = {c7[2:0],c5[3]};
 assign HUNDREDS = {c6[3],c7[3]};  
 endmodule
 
-// This module is called from the previous module to calculate
-// the 8-bits to three different HEX.
+
 module add3(in,out); 
 input [3:0] in; 
 output [3:0] out; 
@@ -146,34 +135,25 @@ module countercode(D,clk,load,Q);
      else 
        cnt =Q;
     end
-  /////////////////////change here////////////////////////  
+  ///////////////////////////////////////////////////////////////////////////////change here////////////////////////////////////////////////////////////////////////////////
+
+  // X = cnt[2] X'= ~cnt[2]
+  // Y = cnt[1] X'= ~cnt[1]
+  // Z = cnt[0] X'= ~cnt[0]  
   
-  assign Tx = (cnt[1]&cnt[0]);    
-  //         // Da = B' + AC
-  // and(DA1, cnt[2],cnt[0]);   //  AC
-  // or(DA2,DA1,~cnt[1]);       //   B' + AC
+  assign Tx = ;    
   T_FF(Tx,clk,Q[2]);
 
 
-  assign Ty = ((~cnt[1]&cnt[0]) | (~cnt[2]&cnt[1]));
-
-  // Db = AC +BC'
-  // and(DB1,cnt[2],cnt[0]);   // AC
-  // and(DB2,cnt[1],~cnt[0]);   //BC'
-  // or(DB3,DB1,DB2);
+  assign Ty = ;
   T_FF(Ty,clk,Q[1]);
 
 
-  assign Tz = ((~cnt[1]&~cnt[0]) | (cnt[2]&cnt[1]));
-
-   // Dc = A'B + AB'
-  // and(DC1,cnt[2],~cnt[1]);   //A'B
-  // and(DC2,~cnt[2],cnt[1]);   //AB'
-  // or(DC3,DC1,DC2);
+  assign Tz = ;
   T_FF(Tz,clk,Q[0]);
   endmodule 
   
-  ///////////////////change here//////////////////////////
+  ////////////////////////////////////////////////////////////////////////////change here////////////////////////////////////////////////////////////////////////////////
 
 module T_FF(T,Clock,Q);
   
@@ -185,3 +165,32 @@ module T_FF(T,Clock,Q);
       Q <= ~Q;
 
 endmodule
+
+
+//
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//               佛祖保佑         卡諾圖圈對
+//               compile          一次過
+//               板子             不要壞掉
+//
