@@ -126,21 +126,17 @@ module countercode(D,clk,load,Q);
   output [2:0] Q;
 
   wire  DA1, DA2,DB1,DB2,DB3,DC1,DC2,DC3;
-  reg [2:0] cnt;
+  reg [2:0] X, Y, Z;
   // Z =cnt[0]  Y=cnt[1]  X=cnt[2]
   always@(negedge clk)
    begin
      if(~load)
-      cnt=D;
+      {X, Y, Z}=D;
      else 
-       cnt =Q;
+      {X, Y, Z}=Q;
     end
   ///////////////////////////////////////////////////////////////////////////////change here////////////////////////////////////////////////////////////////////////////////
 
-  // X = cnt[2] X'= ~cnt[2]
-  // Y = cnt[1] X'= ~cnt[1]
-  // Z = cnt[0] X'= ~cnt[0]  
-  
   assign Tx = ;    
   T_FF(Tx,clk,Q[2]);
 
