@@ -126,7 +126,7 @@ module countercode(D,clk,load,Q);
   output [2:0] Q;
 
   wire  DA1, DA2,DB1,DB2,DB3,DC1,DC2,DC3;
-  reg [2:0] X, Y, Z;
+  reg X, Y, Z;
   // Z =cnt[0]  Y=cnt[1]  X=cnt[2]
   always@(negedge clk)
    begin
