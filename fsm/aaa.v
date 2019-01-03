@@ -59,8 +59,8 @@ module FSM1101or1100(
          begin
             if(inp)
                state = 3'h0;
-				else
-					state = 3'h1;
+            else
+               state = 3'h1;
          end
          3'h1:
          begin
@@ -73,8 +73,8 @@ module FSM1101or1100(
          begin
             if(~inp)
                state = 3'h1;
-				else
-					state = 3'h3;
+            else
+               state = 3'h3;
          end
          3'h3:
          begin
@@ -97,21 +97,21 @@ module FSM1101or1100(
             else
                state = 3'h7;
          end
-			3'h6:
-			begin
-				if(inp)
-					state = 3'h3;
-				else
-					state = 3'h6;
-			end
-			3'h7:
-			begin
-				if(inp)
-					state = 3'h6;
-				else
-					state = 3'h3;
-			end
-			endcase
+         3'h6:
+         begin
+            if(inp)
+               state = 3'h3;
+            else
+               state = 3'h6;
+         end
+         3'h7:
+         begin
+            if(inp)
+               state = 3'h5;
+            else
+               state = 3'h6;
+         end
+         endcase
       end
    end
    always@(*)
@@ -125,7 +125,7 @@ module FSM1101or1100(
             outp = 0;
          3'h7:
             outp = 1;
-			endcase
+         endcase
       end
    end
 endmodule
