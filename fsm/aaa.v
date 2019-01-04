@@ -11,7 +11,8 @@ module aaa(
    assign GPIO_0 = 36'hzzzzzzzzz;
    assign GPIO_1 = 36'hzzzzzzzzz;
    assign LEDR = SW;
-   find_001_First_and_Find_1010(SW[0], KEY[0], KEY[1], LEDG[0]);
+
+   find_001_First_and_Find_1010(SW[0], KEY[0], KEY[1], LEDG[0], LEDG[1]);
    always@(posedge KEY[0], negedge KEY[1])
    begin
       if(~KEY[1])
@@ -42,10 +43,11 @@ module find_001_First_and_Find_1010(
    input inp, 
    input clock, 
    input reset, 
-   output reg outp
+   output reg outp,
+   output reg outp2
 );
    reg [2:0]state;
-
+   
    initial
       state = 3'h0;
    always@(posedge clock, negedge reset)
@@ -117,14 +119,33 @@ module find_001_First_and_Find_1010(
    always@(*)
    begin
       if(~reset)
+      begin
          outp = 0;
+         outp2 = 0;
+      end
       else
       begin
          case(state)
-         3'h0, 3'h1, 3'h2, 3'h3, 3'h4, 3'h5, 3'h6:
+         3'h0, 3'h1, 3'h2:
+         begin
             outp = 0;
+            outp2 = 0;
+         end
          3'h7:
+         begin
             outp = 1;
+            outp2 = 1;
+         end
+         3'h3:
+         begin
+            outp = 0;
+            outp2 = 1;
+         end
+         3'h4, 3'h5, 3'h6:
+         begin
+            outp = 0;
+            outp2 = 1;
+         end
          endcase
       end
    end
