@@ -11,7 +11,7 @@ module aaa(
    assign GPIO_0 = 36'hzzzzzzzzz;
    assign GPIO_1 = 36'hzzzzzzzzz;
    assign LEDR = SW;
-   FSM1101or1100(SW[0], KEY[0], KEY[1], LEDG[0]);
+   find_001_First_and_Find_1010(SW[0], KEY[0], KEY[1], LEDG[0]);
    always@(posedge KEY[0], negedge KEY[1])
    begin
       if(~KEY[1])
@@ -38,7 +38,7 @@ module aaa(
    assign HEX7 = ~7'h00;
 endmodule
 
-module FSM1101or1100(
+module find_001_First_and_Find_1010(
    input inp, 
    input clock, 
    input reset, 
@@ -72,7 +72,7 @@ module FSM1101or1100(
          3'h2:
          begin
             if(~inp)
-               state = 3'h1;
+               state = 3'h2;
             else
                state = 3'h3;
          end
